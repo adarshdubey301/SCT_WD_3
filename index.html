@@ -419,7 +419,7 @@
             <p class="quiz-subtitle">Choose a category and test your knowledge</p>
         </div>
 
-        <!-- Category Selection Screen -->
+       
         <div id="categoryScreen" class="category-screen">
             <div class="category-selection">
                 <div class="category-card math" onclick="selectCategory('math')">
@@ -466,7 +466,7 @@
             </div>
         </div>
 
-        <!-- Quiz Screen -->
+       
         <div id="quizScreen" class="hidden">
             <div class="current-category" id="currentCategory"></div>
             
@@ -475,7 +475,7 @@
             </div>
 
             <div id="questionContainer" class="question-container">
-                <!-- Questions will be dynamically inserted here -->
+                
             </div>
 
             <div class="navigation-buttons">
@@ -486,7 +486,7 @@
             </div>
         </div>
 
-        <!-- Score Screen -->
+       
         <div id="scoreContainer" class="score-container hidden">
             <h2 class="score-title">Quiz Complete!</h2>
             <div class="current-category" id="scoreCategoryName"></div>
@@ -724,12 +724,11 @@
             quizStarted = true;
             quizCompleted = false;
             
-            // Hide category screen and show quiz screen
+        
             document.getElementById('categoryScreen').classList.add('hidden');
             document.getElementById('quizScreen').classList.remove('hidden');
             document.getElementById('scoreContainer').classList.add('hidden');
             
-            // Update current category display
             document.getElementById('currentCategory').textContent = categoryNames[currentCategory];
             
             displayQuestion();
@@ -784,7 +783,7 @@
             html += '</div></div>';
             container.innerHTML = html;
 
-            // Update navigation buttons
+           
             document.getElementById('prevBtn').disabled = currentQuestion === 0;
             document.getElementById('nextBtn').style.display = currentQuestion === currentQuestions.length - 1 ? 'none' : 'block';
             document.getElementById('submitBtn').classList.toggle('hidden', currentQuestion !== currentQuestions.length - 1);
@@ -854,18 +853,18 @@
         function showResults() {
             const score = calculateScore();
             
-            // Hide quiz screen
+
             document.getElementById('quizScreen').classList.add('hidden');
             
-            // Show score container
+          
             document.getElementById('scoreContainer').classList.remove('hidden');
             
-            // Update score display
+          
             document.getElementById('scoreCategoryName').textContent = categoryNames[currentCategory];
             document.getElementById('finalScore').textContent = `${score.correct}/${currentQuestions.length}`;
             document.getElementById('scoreMessage').textContent = getScoreMessage(score.percentage);
             
-            // Show detailed results
+           
             let detailsHtml = '<h3>Detailed Results:</h3>';
             currentQuestions.forEach((question, index) => {
                 const isCorrect = checkAnswer(index);
@@ -930,7 +929,7 @@
         }
 
         function backToCategories() {
-            // Reset quiz state
+            
             currentCategory = '';
             currentQuestions = [];
             currentQuestion = 0;
@@ -938,15 +937,11 @@
             quizStarted = false;
             quizCompleted = false;
             
-            // Show category screen and hide others
             document.getElementById('categoryScreen').classList.remove('hidden');
             document.getElementById('quizScreen').classList.add('hidden');
             document.getElementById('scoreContainer').classList.add('hidden');
         }
-
-        // Initialize the quiz when the page loads
         window.onload = function() {
-            // Show category selection by default
             document.getElementById('categoryScreen').classList.remove('hidden');
             document.getElementById('quizScreen').classList.add('hidden');
             document.getElementById('scoreContainer').classList.add('hidden');
