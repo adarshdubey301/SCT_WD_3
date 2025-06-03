@@ -220,13 +220,11 @@ function initializeQuiz() {
     userAnswers = new Array(currentQuestions.length).fill(null);
     quizStarted = true;
     quizCompleted = false;
-    
-    // Hide category screen and show quiz screen
+
     document.getElementById('categoryScreen').classList.add('hidden');
     document.getElementById('quizScreen').classList.remove('hidden');
     document.getElementById('scoreContainer').classList.add('hidden');
-    
-    // Update current category display
+   
     document.getElementById('currentCategory').textContent = categoryNames[currentCategory];
     
     displayQuestion();
@@ -281,7 +279,6 @@ function displayQuestion() {
     html += '</div></div>';
     container.innerHTML = html;
 
-    // Update navigation buttons
     document.getElementById('prevBtn').disabled = currentQuestion === 0;
     document.getElementById('nextBtn').style.display = currentQuestion === currentQuestions.length - 1 ? 'none' : 'block';
     document.getElementById('submitBtn').classList.toggle('hidden', currentQuestion !== currentQuestions.length - 1);
@@ -350,19 +347,15 @@ function submitQuiz() {
 
 function showResults() {
     const score = calculateScore();
-    
-    // Hide quiz screen
+
     document.getElementById('quizScreen').classList.add('hidden');
     
-    // Show score container
     document.getElementById('scoreContainer').classList.remove('hidden');
-    
-    // Update score display
+
     document.getElementById('scoreCategoryName').textContent = categoryNames[currentCategory];
     document.getElementById('finalScore').textContent = `${score.correct}/${currentQuestions.length}`;
     document.getElementById('scoreMessage').textContent = getScoreMessage(score.percentage);
     
-    // Show detailed results
     let detailsHtml = '<h3>Detailed Results:</h3>';
     currentQuestions.forEach((question, index) => {
         const isCorrect = checkAnswer(index);
@@ -474,7 +467,7 @@ function restartQuiz() {
 }
 
 function backToCategories() {
-    // Reset quiz state
+
     currentCategory = '';
     currentQuestions = [];
     currentQuestion = 0;
@@ -482,24 +475,19 @@ function backToCategories() {
     quizStarted = false;
     quizCompleted = false;
     
-    // Show category screen and hide others
     document.getElementById('categoryScreen').classList.remove('hidden');
     document.getElementById('quizScreen').classList.add('hidden');
     document.getElementById('scoreContainer').classList.add('hidden');
 }
 
-// Add keyboard navigation support
 document.addEventListener('keydown', function(event) {
     if (!quizStarted || quizCompleted) return;
     
-    // Navigate with arrow keys
     if (event.key === 'ArrowRight' && currentQuestion < currentQuestions.length - 1) {
         nextQuestion();
     } else if (event.key === 'ArrowLeft' && currentQuestion > 0) {
         previousQuestion();
     }
-    
-    // Select options with number keys for single/multi choice
     const question = currentQuestions[currentQuestion];
     if (question.type === 'single' || question.type === 'multi') {
         const num = parseInt(event.key);
@@ -511,14 +499,11 @@ document.addEventListener('keydown', function(event) {
             }
         }
     }
-    
-    // Submit with Enter key on last question
     if (event.key === 'Enter' && currentQuestion === currentQuestions.length - 1) {
         submitQuiz();
     }
 });
 
-// Auto-save answers to prevent data loss
 function autoSaveProgress() {
     if (quizStarted && !quizCompleted) {
         const saveData = {
@@ -527,23 +512,20 @@ function autoSaveProgress() {
             userAnswers,
             timestamp: Date.now()
         };
-        // Store in memory for session persistence
+     
         window.quizSaveData = saveData;
     }
 }
 
-// Auto-save every 5 seconds
 setInterval(autoSaveProgress, 5000);
 
-// Initialize the quiz when the page loads
 window.onload = function() {
-    // Show category selection by default
+   
     document.getElementById('categoryScreen').classList.remove('hidden');
     document.getElementById('quizScreen').classList.add('hidden');
     document.getElementById('scoreContainer').classList.add('hidden');
-    
-    // Check for any saved progress (in case of refresh)
-    if (window.quizSaveData && window.quizSaveData.timestamp > Date.now() - 300000) { // 5 minutes
+
+    if (window.quizSaveData && window.quizSaveData.timestamp > Date.now() - 300000) {
         const saveData = window.quizSaveData;
         if (confirm('It looks like you have a quiz in progress. Would you like to continue where you left off?')) {
             currentCategory = saveData.currentCategory;
@@ -562,7 +544,6 @@ window.onload = function() {
     }
 };
 
-// Add touch/swipe support for mobile devices
 let touchStartX = 0;
 let touchEndX = 0;
 
@@ -583,10 +564,10 @@ function handleSwipe() {
     
     if (Math.abs(swipeDistance) > swipeThreshold) {
         if (swipeDistance > 0 && currentQuestion > 0) {
-            // Swipe right - go to previous question
+  
             previousQuestion();
         } else if (swipeDistance < 0 && currentQuestion < currentQuestions.length - 1) {
-            // Swipe left - go to next question
+            
             nextQuestion();
         }
     }
